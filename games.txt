@@ -1,0 +1,5 @@
+GAME::Geography::New Question::Submit Answer::Cheat::Question::Answer
+France's capital,Paris
+Denmark's capital,Copenhagen
+England's capital,London
+GAMEEND
