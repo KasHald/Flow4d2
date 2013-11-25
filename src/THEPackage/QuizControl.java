@@ -46,6 +46,7 @@ public class QuizControl implements QuizControlInterface {
             }
             return true;
         } catch (FileNotFoundException ex) {
+            System.out.println(ex);
             return false;
         } catch (Exception e) {
             System.out.println(e);

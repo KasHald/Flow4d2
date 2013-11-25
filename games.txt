@@ -3,3 +3,6 @@ France's capital,Paris
 Denmark's capital,Copenhagen
 England's capital,London
 GAMEEND
+GAME::Sport::New Question::Submit Answer::Cheat::Question::Answer
+What do play football with,A Football
+GAMEEND
