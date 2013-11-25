@@ -39,7 +39,7 @@ public class Game {
         return this.questionLabelText;
     }
     
-    public String getAnswerLAbelText(){
+    public String getAnswerLabelText(){
         return this.answerLabelText;
     }
     

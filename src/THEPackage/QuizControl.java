@@ -84,7 +84,7 @@ public class QuizControl implements QuizControlInterface {
 
     @Override
     public String getAnswerLabelText() {
-        return this.games.get(currentGame).getAnswerLAbelText();
+        return this.games.get(currentGame).getAnswerLabelText();
     }
 
     @Override
