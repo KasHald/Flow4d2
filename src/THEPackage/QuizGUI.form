@@ -125,7 +125,7 @@
                                   <EmptySpace min="-2" pref="103" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="getCategoryLabel" pref="111" max="32767" attributes="0"/>
+                                  <Component id="getCategoryLabel" max="32767" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="changeCategoryComboBox" min="-2" pref="122" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -143,9 +143,9 @@
                       <Group type="102" attributes="0">
                           <Component id="getQuestionButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="getAnswerButton" max="32767" attributes="0"/>
+                          <Component id="getAnswerButton" min="-2" pref="126" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="addWordButton" min="-2" max="-2" attributes="0"/>
+                          <Component id="addWordButton" min="-2" pref="130" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -213,7 +213,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="addWordButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Add Question"/>
+            <Property name="text" type="java.lang.String" value="Add Words"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addWordButtonActionPerformed"/>
@@ -270,6 +270,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Look up question"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="getLookupButtonActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
