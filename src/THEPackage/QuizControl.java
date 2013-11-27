@@ -109,7 +109,7 @@ public class QuizControl implements QuizControlInterface {
     }
 
     @Override
-    public void saveQuizz() {
+    public boolean saveQuizz() {
         try {
             pw = new PrintWriter("games.txt");
             for (int x = 0; x < this.games.size(); x++) {
@@ -124,8 +124,16 @@ public class QuizControl implements QuizControlInterface {
                 pw.write("GAMEEND\n");
             }
             pw.close();
+            return true;
         } catch (FileNotFoundException ex) {
+            return false;
         } catch (Exception e) {
+            return false;
         }
+    }
+
+    @Override
+    public Game currentGame() {
+        return games.get(currentGame);
     }
 }

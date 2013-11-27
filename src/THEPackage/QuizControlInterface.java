@@ -85,5 +85,7 @@ void addQuizz(String quizzName, String questionButtonText, String answerButtonTe
    * Pre: Post: All the quizzes configuration data are save to the file
    * "quizzConfigurations.txt". Returns true if successfully done. Otherwise false.
    */
-void saveQuizz();
+boolean saveQuizz();
+
+Game currentGame();
 }
