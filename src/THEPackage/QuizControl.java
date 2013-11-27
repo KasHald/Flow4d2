@@ -20,36 +20,68 @@ public class QuizControl implements QuizControlInterface {
 
     @Override
     public boolean loadGames() {
+        Game tempGame = new Game("", "", "", "", "", "");
+        ArrayList<String> names;
+        String[] att = new String[6];
         try {
-            int counter = 0;
-            Game tempGame = null;
-            scan = new Scanner(new File("games.txt"));
+            names = new ArrayList();
+            scan = new Scanner("games.txt");
             while (scan.hasNextLine()) {
                 String line = scan.nextLine();
-                System.out.println(counter + " : " +  line);
-                if (line.contains("GAME::")) {
-                    String[] temp = line.split("::");
-                    tempGame = new Game(temp[1], temp[2], temp[3], temp[4], temp[5], temp[6]);
-                    System.out.println("New quiz");
-                } else if (line.contains(",")) {
-                    String[] temp = line.split(",");
-                    WordPair tempWP = new WordPair(temp[0], temp[1]);
-                    if (tempGame != null) {
-                        tempGame.addWordPair(tempWP);
-                        System.out.println("Wordpair added");
-                    }
-                } else if (line.contains("GAMEEND")) {
-                    this.games.add(tempGame);
-                    System.out.println("Quiz added to array");
-                }
-                counter++;
+                names.add(line);
             }
-            return true;
-        } catch (FileNotFoundException ex) {
-            System.out.println(ex);
-            return false;
+
+//            int counter = 0;
+//            Game tempGame = null;
+//            scan = new Scanner(new File("games.txt"));
+//            while (scan.hasNextLine()) {
+//                String line = scan.nextLine();
+//                System.out.println(counter + " : " +  line);
+//                if (line.contains("GAME::")) {
+//                    String[] temp = line.split("::");
+//                    tempGame = new Game(temp[1], temp[2], temp[3], temp[4], temp[5], temp[6]);
+//                    System.out.println("New quiz");
+//                } else if (line.contains(",")) {
+//                    String[] temp = line.split(",");
+//                    WordPair tempWP = new WordPair(temp[0], temp[1]);
+//                    if (tempGame != null) {
+//                        tempGame.addWordPair(tempWP);
+//                        System.out.println("Wordpair added");
+//                    }
+//                } else if (line.contains("GAMEEND")) {
+//                    this.games.add(tempGame);
+//                    System.out.println("Quiz added to array");
+//                }
+//                counter++;
+//            }
         } catch (Exception e) {
             System.out.println(e);
+            return false;
+        }
+
+        try {
+            for (int x = 0; x < names.size(); x++){
+                scan = new Scanner(names.get(x) + ".txt");
+                int counter = 0;
+                while (scan.hasNextLine()){
+                    String line = scan.nextLine();
+                    if (counter <= 5){
+                        att[counter] = line;
+                    } else {
+                        String[] spLine = line.split(",");
+                        WordPair tempWP = new WordPair(spLine[0], spLine[1]);
+                        tempGame.addWordPair(tempWP);
+                    }
+                    
+                    if (counter == 5){
+                        tempGame = new Game(att[1], att[2], att[3], att[4], att[5], att[6]);
+                    }
+                    counter++;
+                }
+                this.games.add(tempGame);
+            }
+            return true;
+        } catch (Exception e) {
             return false;
         }
     }
