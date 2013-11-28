@@ -7,17 +7,17 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class QuizControl implements QuizControlInterface {
-
+    
     private ArrayList<Game> games;
     private int currentGame;
     private PrintWriter pw;
     private Scanner scan;
-
+    
     public QuizControl() {
         currentGame = 0;
         games = new ArrayList();
     }
-
+    
     @Override
     public boolean loadGames() {
         Game tempGame = new Game("", "", "", "", "", "");
@@ -25,10 +25,11 @@ public class QuizControl implements QuizControlInterface {
         String[] att = new String[6];
         try {
             names = new ArrayList();
-            scan = new Scanner("games.txt");
+            scan = new Scanner(new File("games.txt"));
             while (scan.hasNextLine()) {
                 String line = scan.nextLine();
                 names.add(line);
+                System.out.println(line);
             }
 
 //            int counter = 0;
@@ -58,34 +59,44 @@ public class QuizControl implements QuizControlInterface {
             System.out.println(e);
             return false;
         }
-
+        
         try {
-            for (int x = 0; x < names.size(); x++){
-                scan = new Scanner(names.get(x) + ".txt");
+            for (int x = 0; x < names.size(); x++) {
+                scan = new Scanner(new File(names.get(x) + ".txt"));
                 int counter = 0;
-                while (scan.hasNextLine()){
+                while (scan.hasNextLine()) {
                     String line = scan.nextLine();
-                    if (counter <= 5){
-                        att[counter] = line;
+                    System.out.println(line);
+                    if (counter <= 5) {
+                        if (!line.equals("")) {
+                            att[counter] = line;
+                            counter++;
+                        }
                     } else {
-                        String[] spLine = line.split(",");
-                        WordPair tempWP = new WordPair(spLine[0], spLine[1]);
-                        tempGame.addWordPair(tempWP);
+                        if (line.contains(",")) {
+                            String[] spLine = line.split(",");
+                            WordPair tempWP = new WordPair(spLine[0], spLine[1]);
+                            tempGame.addWordPair(tempWP);
+                            System.out.println("Words added");
+                            counter++;
+                        }
                     }
                     
-                    if (counter == 5){
-                        tempGame = new Game(att[1], att[2], att[3], att[4], att[5], att[6]);
+                    if (counter == 5) {
+                        tempGame = new Game(att[0], att[1], att[2], att[3], att[4], att[5]);
+                        System.out.println("Game added");
                     }
-                    counter++;
+                    System.out.println(counter + ": " + line);
                 }
                 this.games.add(tempGame);
             }
             return true;
         } catch (Exception e) {
+            System.out.println(e);
             return false;
         }
     }
-
+    
     @Override
     public String[] getGameNames() {
         String[] temp = new String[this.games.size()];
@@ -94,7 +105,7 @@ public class QuizControl implements QuizControlInterface {
         }
         return temp;
     }
-
+    
     @Override
     public void selectGame(String gameName) {
         for (int x = 0; x < this.games.size(); x++) {
@@ -103,57 +114,74 @@ public class QuizControl implements QuizControlInterface {
             }
         }
     }
-
+    
     @Override
     public String getSelectedGameName() {
         return this.games.get(currentGame).getQuizName();
     }
-
+    
     @Override
     public String getQuestionLabelText() {
         return this.games.get(currentGame).getQuestionLabelText();
     }
-
+    
     @Override
     public String getAnswerLabelText() {
         return this.games.get(currentGame).getAnswerLabelText();
     }
-
+    
     @Override
     public String getQuestionButtonText() {
         return this.games.get(currentGame).getQuestionButtonText();
     }
-
+    
     @Override
     public String getAnswerButtonText() {
         return this.games.get(currentGame).getAnswerButtonText();
     }
-
+    
     @Override
     public String getLookupButtonText() {
         return this.games.get(currentGame).getLookupButtonText();
     }
-
+    
     @Override
     public void addQuizz(String quizzName, String questionButtonText, String answerButtonText, String lookupButtonText, String questionLabelText, String answerLabelText) {
         Game temp = new Game(quizzName, questionButtonText, answerButtonText, lookupButtonText, questionLabelText, answerLabelText);
         games.add(temp);
     }
-
+    
     @Override
     public boolean saveQuizz() {
         try {
             pw = new PrintWriter("games.txt");
-            for (int x = 0; x < this.games.size(); x++) {
-                pw.write("GAME::" + this.games.get(x).getQuizName());
-                ArrayList<WordPair> temp = this.games.get(x).getPairs();
-                for (int y = 0; y < temp.size(); y++) {
-                    pw.write(temp.get(y).getQuestion() + "," + temp.get(y).getAnswer());
-                    if (y != temp.size() - 1) {
+            for (int x = 0; x < games.size(); x++) {
+                pw.write(games.get(x).getQuizName());
+                if (x != games.size() - 1) {
+                    pw.println("\n");
+                }
+            }
+            
+            for (int y = 0; y < games.size(); y++) {
+                pw = new PrintWriter(games.get(y).getQuizName() + ".txt");
+                pw.write(games.get(y).getQuizName());
+                pw.println("\n");
+                pw.write(games.get(y).getQuestionButtonText());
+                pw.println("\n");
+                pw.write(games.get(y).getAnswerButtonText());
+                pw.println("\n");
+                pw.write(games.get(y).getLookupButtonText());
+                pw.println("\n");
+                pw.write(games.get(y).getQuestionLabelText());
+                pw.println("\n");
+                pw.write(games.get(y).getAnswerLabelText());
+                pw.println("\n");
+                for (int z = 0; z < games.get(y).size(); z++) {
+                    pw.write(games.get(y).getQuestion(z) + "," + games.get(y).getAnswer(z));
+                    if (z != games.get(y).size() - 1) {
                         pw.println("\n");
                     }
                 }
-                pw.write("GAMEEND\n");
             }
             pw.close();
             return true;
@@ -163,7 +191,7 @@ public class QuizControl implements QuizControlInterface {
             return false;
         }
     }
-
+    
     @Override
     public Game currentGame() {
         return games.get(currentGame);

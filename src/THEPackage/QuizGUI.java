@@ -1,8 +1,9 @@
 package THEPackage;
 
-
 import java.awt.Color;
-import javax.swing.JComboBox;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JMenuItem;
 
 /*
  * To change this template, choose Tools | Templates
@@ -15,6 +16,7 @@ import javax.swing.JComboBox;
 public class QuizGUI extends javax.swing.JFrame {
 
     private QuizControlInterface control;
+    private String currentChoice;
 
     public QuizGUI() {
         initComponents();
@@ -32,14 +34,12 @@ public class QuizGUI extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         getQuestionTextField = new javax.swing.JTextField();
-        changeCategoryComboBox = new javax.swing.JComboBox();
         getAnswerTextField = new javax.swing.JTextField();
         addWordButton = new javax.swing.JButton();
         checkIfAnswerIsCorrectLabel = new javax.swing.JLabel();
         getAnswerButton = new javax.swing.JButton();
         getQuestionLabel = new javax.swing.JLabel();
         getQuestionButton = new javax.swing.JButton();
-        choseCategoryButton = new javax.swing.JButton();
         getCategoryLabel = new javax.swing.JLabel();
         getAnswerLabel = new javax.swing.JLabel();
         getLookupButton = new javax.swing.JButton();
@@ -49,22 +49,17 @@ public class QuizGUI extends javax.swing.JFrame {
         loadListMenuItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        gamesMenu = new javax.swing.JMenu();
         helpMenuItem = new javax.swing.JMenu();
         aboutMenuItem = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Quiz Game");
 
         getQuestionTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 getQuestionTextFieldActionPerformed(evt);
-            }
-        });
-
-        changeCategoryComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        changeCategoryComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                changeCategoryComboBoxActionPerformed(evt);
             }
         });
 
@@ -99,14 +94,8 @@ public class QuizGUI extends javax.swing.JFrame {
             }
         });
 
-        choseCategoryButton.setText("Get Category");
-        choseCategoryButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                choseCategoryButtonActionPerformed(evt);
-            }
-        });
-
         getCategoryLabel.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        getCategoryLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         getCategoryLabel.setText("Category");
 
         getAnswerLabel.setText("Answer:");
@@ -124,24 +113,6 @@ public class QuizGUI extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel1Layout.createSequentialGroup()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jPanel1Layout.createSequentialGroup()
-                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                                    .add(org.jdesktop.layout.GroupLayout.LEADING, getAnswerLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .add(org.jdesktop.layout.GroupLayout.LEADING, getQuestionLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .add(103, 103, 103))
-                            .add(jPanel1Layout.createSequentialGroup()
-                                .add(getCategoryLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                                .add(changeCategoryComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 122, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(18, 18, 18)
-                                .add(choseCategoryButton))
-                            .add(jPanel1Layout.createSequentialGroup()
-                                .add(checkIfAnswerIsCorrectLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .add(81, 81, 81)
-                                .add(getLookupButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .add(getQuestionTextField)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, getAnswerTextField)
                     .add(jPanel1Layout.createSequentialGroup()
@@ -149,22 +120,33 @@ public class QuizGUI extends javax.swing.JFrame {
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(getAnswerButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 126, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(addWordButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 130, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                        .add(addWordButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 130, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jPanel1Layout.createSequentialGroup()
+                                .add(checkIfAnswerIsCorrectLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 143, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(80, 80, 80)
+                                .add(getLookupButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 130, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(0, 0, Short.MAX_VALUE))
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                                    .add(org.jdesktop.layout.GroupLayout.LEADING, getAnswerLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .add(org.jdesktop.layout.GroupLayout.LEADING, getQuestionLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .add(103, 103, 103))
+                            .add(getCategoryLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(changeCategoryComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(choseCategoryButton)
-                    .add(getCategoryLabel))
-                .add(24, 24, 24)
+                .add(20, 20, 20)
+                .add(getCategoryLabel)
+                .add(18, 18, 18)
                 .add(getQuestionLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 16, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(getQuestionTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 28, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(19, 19, 19)
+                .add(getQuestionTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(27, 27, 27)
                 .add(getAnswerLabel)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(getAnswerTextField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -173,7 +155,7 @@ public class QuizGUI extends javax.swing.JFrame {
                     .add(addWordButton)
                     .add(getAnswerButton)
                     .add(getQuestionButton))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(checkIfAnswerIsCorrectLabel)
                     .add(getLookupButton))
@@ -210,6 +192,9 @@ public class QuizGUI extends javax.swing.JFrame {
 
         jMenuBar1.add(fileMenuButton);
 
+        gamesMenu.setText("Games");
+        jMenuBar1.add(gamesMenu);
+
         helpMenuItem.setText("Help");
 
         aboutMenuItem.setText("Help");
@@ -245,28 +230,24 @@ public class QuizGUI extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(helpTextLabel)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void changeCategoryComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeCategoryComboBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_changeCategoryComboBoxActionPerformed
-
     private void getQuestionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getQuestionButtonActionPerformed
         String add = control.currentGame().getRandomQuestion();
         if (add != null) {
-            checkIfAnswerIsCorrectLabel.setText(add);
+            getQuestionTextField.setText(add);
         } else {
             helpTextLabel.setText("No words could be found in the list.");
-        }       
+        }
     }//GEN-LAST:event_getQuestionButtonActionPerformed
 
     private void getAnswerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAnswerButtonActionPerformed
@@ -276,26 +257,23 @@ public class QuizGUI extends javax.swing.JFrame {
         } else {
             checkIfAnswerIsCorrectLabel.setForeground(Color.red);
             checkIfAnswerIsCorrectLabel.setText("Wrong!");
-        }        
+        }
     }//GEN-LAST:event_getAnswerButtonActionPerformed
 
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
-        
-        
     }//GEN-LAST:event_aboutMenuItemActionPerformed
 
     private void getQuestionTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getQuestionTextFieldActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_getQuestionTextFieldActionPerformed
 
     private void addWordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addWordButtonActionPerformed
         WordPair temp = new WordPair(getQuestionTextField.getText(), getAnswerTextField.getText());
-        control.currentGame().addWordPair(temp);                             
+        control.currentGame().addWordPair(temp);
         helpTextLabel.setText("'" + getQuestionTextField.getText() + "' has been added to the list of questions.");
         getQuestionTextField.setText("");
         getAnswerTextField.setText("");
-  
-  
+
+
 
     }//GEN-LAST:event_addWordButtonActionPerformed
 
@@ -303,95 +281,67 @@ public class QuizGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_getAnswerTextFieldActionPerformed
 
-    private void choseCategoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_choseCategoryButtonActionPerformed
-        String temp = changeCategoryComboBox.getSelectedItem().toString();
-        control.selectGame(temp);
-        getCategoryLabel.setText(control.getSelectedGameName());
-        getQuestionLabel.setText(control.getQuestionLabelText());
-        getAnswerLabel.setText(control.getAnswerLabelText());
-        getQuestionButton.setText(control.getQuestionButtonText());
-        getAnswerButton.setText(control.getAnswerButtonText());
-        getLookupButton.setText(control.getLookupButtonText());
-         
-        helpTextLabel.setText("Category chosen");
-    }//GEN-LAST:event_choseCategoryButtonActionPerformed
-
     private void loadListMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadListMenuItemActionPerformed
-        if (control.loadGames()){
-        changeCategoryComboBox = new JComboBox(control.getGameNames());
-        helpTextLabel.setText("List loaded.");        
-        } 
-        else {
+        if (control.loadGames()) {
+            String[] temp = control.getGameNames();
+            for (int x = 0; x < temp.length; x++) {
+                JMenuItem item = new JMenuItem(temp[x]);
+                item.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        JMenuItem itim = (JMenuItem) ae.getSource();
+                        control.selectGame(itim.getText());
+                        getCategoryLabel.setText(control.getSelectedGameName());
+                        getQuestionLabel.setText(control.getQuestionLabelText());
+                        getAnswerLabel.setText(control.getAnswerLabelText());
+                        getQuestionButton.setText(control.getQuestionButtonText());
+                        getAnswerButton.setText(control.getAnswerButtonText());
+                        getLookupButton.setText(control.getLookupButtonText());
+
+                        helpTextLabel.setText("Category chosen");
+                    }
+                });
+                gamesMenu.add(item);
+            }
+            helpTextLabel.setText("List loaded.");
+        } else {
             helpTextLabel.setText("List failed loading.");
         }
-            
+
     }//GEN-LAST:event_loadListMenuItemActionPerformed
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         control.saveQuizz();
-        helpTextLabel.setText("List saved.");        
-        
+        helpTextLabel.setText("List saved.");
+
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         System.exit(0);
-        
+
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-    helpTextLabel.setText("Programmed by Kasper, Esben and Daniel, as a flow project.");   
-    
+        helpTextLabel.setText("Programmed by Kasper, Esben and Daniel, as a flow project.");
+
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void getLookupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getLookupButtonActionPerformed
-        control.currentGame().Lookup(getQuestionTextField.getText());
-       
+        getAnswerTextField.setText(control.currentGame().Lookup(getQuestionTextField.getText()));
+        helpTextLabel.setText("Solution found");
     }//GEN-LAST:event_getLookupButtonActionPerformed
 
     private void initializeProgram() {
         control = new QuizControl();
-        
-    }
-
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(QuizGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(QuizGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(QuizGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(QuizGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new QuizGUI().setVisible(true);
-            }
-        });
+        helpTextLabel.setText("Welcome to Quiz Game");
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JButton addWordButton;
-    private javax.swing.JComboBox changeCategoryComboBox;
     private javax.swing.JLabel checkIfAnswerIsCorrectLabel;
-    private javax.swing.JButton choseCategoryButton;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenuButton;
+    private javax.swing.JMenu gamesMenu;
     private javax.swing.JButton getAnswerButton;
     private javax.swing.JLabel getAnswerLabel;
     private javax.swing.JTextField getAnswerTextField;

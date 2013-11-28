@@ -17,6 +17,7 @@ public class Game implements GameInterface {
         this.questionLabelText = questionLabelText;
         this.answerLabelText = answerLabelText;
         this.r = new Random();
+        this.pairs = new ArrayList();
     }
     
     @Override
